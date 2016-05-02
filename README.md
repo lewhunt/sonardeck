@@ -57,23 +57,35 @@ Using the Widget API has a knock-on effect of slower performance on some mobile 
 ## Support
 This app is built by Lew Hunt using HTML5, CSS3, JS, AngularJS and powered by the SoundCloud API. Specific modules used are listed in the Credits section
 
-If you like using this app and/or have any suggestions you can support me via this github account or any of these links:
+If you like using this app and/or have any suggestions you can follow me via this github account or any of these links:
 
 https://twitter.com/SonarDeck
+
 https://twitter.com/Lew_Hunt
+
 https://soundcloud.com/sonardeck
+
 https://soundcloud.com/lewhunt
 
 ## Credits
 Thanks to the following for providing useful modules:
+
 https://github.com/vitalets/checklist-model
+
 https://github.com/gsklee/ngStorage
+
 https://github.com/sroze/ngInfiniteScroll
+
 https://github.com/daneden/animate.css
+
 https://github.com/codrops/Blueprint-ResponsiveFullWidthGrid
-http://stackoverflow.com/questions/24503882/the-google-cards-flip-and-grow-effect 
+
+http://stackoverflow.com/questions/24503882/the-google-cards-flip-and-grow-effect
+
 https://github.com/soundcloud/soundcloud-javascript
+
 https://w.soundcloud.com/player/api_playground.html
+
 https://github.com/angular
 
 ![Intro screen image](img/sonardeck-intro-screen.jpg)
