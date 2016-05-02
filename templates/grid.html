@@ -1,0 +1,26 @@
+<div class="sd-main container-fluid" ng-cloak>
+
+		<ul id="cbp-rfgrid" class="cbp-rfgrid" infinite-scroll-disabled="mainCtrl.busy" infinite-scroll="mainCtrl.infiniteScrollActivated()" infinite-scroll-distance="0" infinite-scroll-immediate-check="true">
+	
+			<!-- unused filter options -->
+			<!-- orderBy:'created_at':reverse=false -->
+			<!-- rangeFilter:mainCtrl.filters[mainCtrl.pageType].likes_count:'likes_count' -->
+			
+			<li ng-repeat="item in mainCtrl.filteredItems[mainCtrl.pageType] = ( mainCtrl.items[mainCtrl.pageType] | customFilter:mainCtrl.filters[mainCtrl.pageType].type:'type' | filter:mainCtrl.filters[mainCtrl.pageType].keywords:mainCtrl.multipleKeywordsComparator ) | limitTo:mainCtrl.limitCount" class="repeated-item">
+			
+				<a thumbnail-directive ng-click="mainCtrl.printItem(item);" data-track="{{item.uri}}">
+					<img class="artwork" src="img/placeholder.png" ng-src="{{item.artwork_url}}" />
+					<div>	
+						<h3><span>{{item.user.username}}</span></h3>
+						<h2><span>{{item.title}}</span></h2>
+					</div>
+				</a>
+			</li>
+
+			<div style='clear: both;'></div>
+					
+		</ul>
+
+
+</div>
+

@@ -1,0 +1,486 @@
+<!-- © 2016 Lew Hunt - SonarDeck - the free web app that filters your SoundCloud stream, likes and new music tracks -->
+
+<!DOCTYPE html>
+
+<html lang="en">
+	<head>
+		
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+		
+		<title>SonarDeck - the free web app that filters your SoundCloud stream, likes and new music tracks - © 2016 Lew Hunt</title>
+		
+		<style>	
+			[ng\:cloak], [ng-cloak], .ng-cloak {
+				display: none !important;
+			}
+	
+		</style>
+
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+		
+		<link rel="stylesheet" href="css/animate.css">
+		
+		<link rel="stylesheet" type="text/css" href="css/style.css" />
+		
+		<link rel="stylesheet" type="text/css" href="css/grid.css" />
+		
+		<!--
+		<script>
+		  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+		  ga('create', 'UA-73182630-6', 'auto');
+		  ga('send', 'pageview');
+
+		</script>
+		-->		
+		
+	</head>
+	
+	<body ng-cloak ng-app="sonardeckApp" ng-controller="MainController as mainCtrl" close-player-directive>
+	
+		<div class="sd-intro-container" ng-click="mainCtrl.hideIntroScreen();" ng-class="{true: 'show',false: 'hide' }[mainCtrl.showIntro]">
+				
+			<div class="sd-intro" ng-class="{true: 'show animated fadeIn',false: 'animated fadeOut hide' }[mainCtrl.showIntro]">
+							
+					<h2>SONAR DECK</h2>
+
+					<h3>YOUR SOUNDCLOUD STREAM...<br><em>FILTERED</em></h3>
+
+					<h3>YOUR SOUNDCLOUD LIKES...<br><em>FILTERED</em></h3>
+				
+					<h3>NEW SOUNDCLOUD TRACKS...<br><em>FILTERED</em></h3>
+					
+					<div class="connect" ng-class="{true: 'show animated fadeIn',false: 'animated fadeOut hide' }[!mainCtrl.signedIn]">
+						<label>
+						<input type="image" src="http://connect.soundcloud.com/2/btn-connect-sc-l.png" ng-click="mainCtrl.connectButtonSelected();"/>
+						<br>Connect via the official SoundCloud API<br>to filter your personal likes and stream
+						</label>
+					</div>
+					
+					<div class="support" ng-class="{true: 'show animated fadeIn',false: 'animated fadeOut hide' }[mainCtrl.signedIn]">
+						<label>
+							<span>Like using this free music app? Support me:</span>
+						<br>
+		
+							<div class="iframe">
+								<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://www.sonardeck.com" data-text="Check out SonarDeck - a free web app that filters your #SoundCloud stream, likes and new music tracks" data-via="SonarDeck" data-related="Lew_Hunt">Tweet</a>
+								<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+							</div>
+							
+							<div class="iframe">	
+								<a href="https://twitter.com/Lew_hunt" class="twitter-follow-button" data-show-count="false" data-show-screen-name="false">Follow @Lew_hunt</a>
+								<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+							</div>
+												
+							<div class="iframe">	
+								<iframe src="https://ghbtns.com/github-btn.html?user=lewhunt&repo=sonardeck&type=star&count=false" frameborder="0" scrolling="0" width="53px" height="20px"></iframe>	
+							</div>
+
+
+							<div class="iframe sc">			
+								<iframe allowtransparency="true" scrolling="no" frameborder="no" src="https://w.soundcloud.com/icon/?url=http%3A%2F%2Fsoundcloud.com%2Flewhunt&color=white_transparent&size=32" style="width: 32px; height: 32px;"></iframe>
+							</div>
+
+							
+						</label>
+						
+					</div>			
+		
+			</div>
+			
+			<div class="continue" ng-class="{true: 'show animated fadeIn',false: 'animated fadeOut hide' }[mainCtrl.showIntro]">
+						
+				Click to continue
+				
+			</div>	
+			
+		
+		</div>
+		
+		<nav class="navbar-inverse navbar-fixed-top">
+  
+			<div class="container-fluid">
+		
+				<div class="sd-navbar">
+					
+					<div class="sd-navbar-options">
+					
+						<a class="navbar-brand pull-left" ng-click="mainCtrl.showIntroScreen();">
+							<span>SONAR&nbsp;DECK</span>
+						</a>
+					
+						<a ng-href="#/latest" class="btn btn-link btn-lg" ng-class="{active: mainCtrl.pageType=='latest'}">
+							<span class="glyphicon glyphicon-flash"></span>
+							<div>Latest</div>
+						</a>	
+	
+						<a ng-href="#/explore" class="btn btn-link btn-lg" ng-class="{active: mainCtrl.pageType=='explore'}">
+							<span class="glyphicon glyphicon-cloud-download"></span>
+							<div>Explore</div>
+						</a>
+	
+						<a ng-href="#/stream" class="btn btn-link btn-lg" ng-class="{active: mainCtrl.pageType=='stream'}">
+							<span class="glyphicon glyphicon-fire"></span>
+							<div>Stream</div>
+						</a>
+
+						<a ng-href="#/likes" class="btn btn-link btn-lg" ng-class="{active: mainCtrl.pageType=='likes'}">
+							<span class="glyphicon glyphicon-heart"></span>
+							<div>Likes</div>
+						</a>
+						
+					
+						<a class="btn btn-link btn-lg pull-right" ng-class="{active: mainCtrl.showMenu}" ng-click="mainCtrl.filterButtonSelected();">
+							<span class="glyphicon glyphicon-cog"></span>
+							<div cloak>{{mainCtrl.showMenu!=true && ('Filters') || ('Close')}}</div>
+						</a>
+					
+					</div>	
+					
+					<div class="sd-navbar-player-options" close-player-directive>
+							<a close-player-directive class="btn btn-link btn-lg pull-left" >
+								<span close-player-directive class="glyphicon glyphicon-arrow-left"></span>
+								<div close-player-directive>Back</div>
+							</a>
+							
+							<span class="support">
+								<div class="message">
+									<div>
+										Like this free music app ?
+										<br>
+										Support me over here :
+									</div> 
+								</div>
+																	
+								<div class="twitter">
+									<div>
+										<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://www.sonardeck.com" data-text="Check out SonarDeck - a free web app that filters your #SoundCloud stream, likes and new music tracks" data-via="SonarDeck" data-related="Lew_Hunt">Tweet</a>
+										<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+									</div>
+									<div>
+										<a href="https://twitter.com/Lew_Hunt" class="twitter-follow-button" data-show-count="false" data-show-screen-name="false">Follow @Lew_Hunt</a>
+										<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+									</div>
+								</div>
+								
+								<div>
+									<div class="soundcloud">
+										<iframe allowtransparency="true" scrolling="no" frameborder="no" src="https://w.soundcloud.com/icon/?url=http%3A%2F%2Fsoundcloud.com%2Flewhunt&color=white_transparent&size=32" style="width: 32px; height: 32px;"></iframe>
+									</div>
+									<div class="github">
+										<iframe src="https://ghbtns.com/github-btn.html?user=lewhunt&repo=sonardeck&type=star&count=false" frameborder="0" scrolling="0" width="60px" height="20px"></iframe>	
+									</div>	
+								</div>	
+						</span>
+					</div>
+				
+				</div>
+
+			</div>
+	 
+
+		</nav>	
+
+					
+		<div ng-view></div>
+				
+		
+		<div class="sd-main-cover" ng-click="mainCtrl.filterButtonSelected();" ng-class="{true: 'show animated fadeIn',false: 'animated fadeOut hide' }[mainCtrl.showMenu]"></div>   
+
+		
+		<div class="sd-filter-panel" ng-class="{true: 'animated slideInRight reset-margin', false: 'animated slideOutRight reset-margin' }[mainCtrl.showMenu]">
+
+
+			<div class="sd-filter-buttons">
+			
+				<button class="pull-left clear-filters" type="button" ng-click="mainCtrl.clearFiltersButtonSelected()">Clear Filters</button>	
+			
+				<div class="pull-right">					
+					<img ng-show="mainCtrl.signedIn" ng-click="mainCtrl.disconnectButtonSelected();" ng-src="http://connect.soundcloud.com/2/btn-disconnect-m.png" width="119" />
+					<img ng-show="!mainCtrl.signedIn" ng-click="mainCtrl.connectButtonSelected();" ng-src="http://connect.soundcloud.com/2/btn-connect-m.png" width="105" />
+				</div>	
+			</div>	
+
+
+			
+			<div ng-show="mainCtrl.pageType=='explore'"  class="input-keyword-div">
+				<input id="search_all" type="search" class="input-keyword" ng-model="mainCtrl.filters[mainCtrl.pageType].searchQuery" placeholder="Search by keyword" ng-change="mainCtrl.searchQueryChanged()" ng-model-options="{ debounce: { 'default': 750, 'blur': 0 } }"/>
+			</div>	
+			<small ng-show="mainCtrl.pageType=='explore'" class="sd-search-hint" ng-click="mainCtrl.clearFiltersButtonSelected()">To search in all genres, clear any filters below</small>
+						
+			
+			<div id="accordion" class="nav scrollable">	
+			
+			
+				<fieldset ng-show="mainCtrl.pageType=='latest'" class="panel">
+			
+					<legend id="latestTracksByTypeLegend" align="center" data-toggle="collapse" class="sd-latest collapsed" data-parent="#accordion" data-target="#latestTracksByType">
+						Latest Tracks by Type
+					</legend>
+					
+					<div class="sd-fieldset-expander">
+						<a id="latestTracksByTypeExpander" data-toggle="collapse" class="collapsed" data-parent="#accordion" data-target="#latestTracksByType">
+						<br/>
+						{{mainCtrl.filters[mainCtrl.pageType].track_type.length>0 && ('filtering: ' + mainCtrl.filters[mainCtrl.pageType].track_type) || ('showing all track types') }}
+						</a>
+					</div>
+				
+					<div id="latestTracksByType" class="collapse">
+
+						<div class="nav nav-stacked">
+
+							<label ng-repeat="item in mainCtrl.latestTrackTypeModel" >
+								<input type="checkbox" class="single-select" ng-change="mainCtrl.updateFilterOptions($index, 'track_type');" checklist-model="mainCtrl.filters[mainCtrl.pageType].track_type" checklist-value="item" hidden><span>{{item}}</span>
+							</label>							
+
+						</div>
+
+					</div>
+
+				</fieldset>		
+
+			
+				<fieldset ng-show="mainCtrl.pageType=='explore'" class="panel">
+			
+					<legend id="exploreTracksByGenreLegend" align="center" data-toggle="collapse" class="sd-latest collapsed" data-parent="#accordion" data-target="#exploreTracksByGenre">
+						Explore Tracks by Genre
+					</legend>
+					
+					<div class="sd-fieldset-expander">
+						<a id="exploreTracksByGenreExpander" data-toggle="collapse" class="collapsed" data-parent="#accordion" data-target="#exploreTracksByGenre">
+						<br/>
+						{{mainCtrl.filters[mainCtrl.pageType].genre.length>0 && ('filtering: ' + mainCtrl.filters[mainCtrl.pageType].genre) || ('no genre selected') }}
+						</a>
+					</div>
+				
+					<div id="exploreTracksByGenre" class="collapse">
+
+						<div class="nav nav-stacked sd-fieldset-scrollable-list">
+
+							<label ng-repeat="item in mainCtrl.genreModel" >
+								<input type="checkbox" class="single-select" ng-change="mainCtrl.updateFilterOptions($index, 'genre');" checklist-model="mainCtrl.filters[mainCtrl.pageType].genre" checklist-value="item" hidden><span>{{item}}</span>
+							</label>							
+
+						</div>
+
+					</div>
+
+				</fieldset>	
+		
+		
+		
+				<fieldset ng-show="mainCtrl.pageType=='stream'" class="panel">
+			
+					<legend id="filterByStreamTypeLegend" align="center" data-toggle="collapse" class="sd-latest" data-parent="#accordion" data-target="#filterByStreamType">
+						Filter Stream by Type
+					</legend>
+					
+					<div class="sd-fieldset-expander">
+						<a id="filterByStreamTypeExpander" data-toggle="collapse" class="" data-parent="#accordion" data-target="#filterByStreamType">
+						<br/>
+						{{mainCtrl.filters[mainCtrl.pageType].type.length>0 && ('filtering: ' + mainCtrl.listSelectedTrackTypes()) || ('showing all including reposts') }}
+						</a>
+					</div>
+				
+					<div id="filterByStreamType" class="collapse in">
+
+						<div class="nav nav-stacked">
+					
+								<label ng-repeat="(key, value) in mainCtrl.streamTrackTypesModel"> 
+								  <input type="checkbox" class="multiple-select" ng-change="mainCtrl.updatedFilterRefresh()" checklist-model="mainCtrl.filters.stream.type" checklist-value="key" hidden><span>{{value}}</span>
+								</label>						
+
+						</div>
+					
+						<small>Tip: you can select multiple types</small>
+
+					</div>				
+
+				</fieldset>	
+		
+			
+				<fieldset class="panel">
+			
+					<legend id="refineByKeywordsLegend" align="center" data-toggle="collapse" class="sd-latest" data-parent="#accordion" data-target="#refineByKeywords">
+						Refine with Keywords
+					</legend>
+					
+					<div class="sd-fieldset-expander">
+						<a id="refineByKeywordsExpander" data-toggle="collapse" data-parent="#accordion" data-target="#refineByKeywords">
+						<br/>
+						{{mainCtrl.countKeywordsEntered(mainCtrl.filters[mainCtrl.pageType].keywords)==0 && ('no keywords entered') || ('') }}
+						{{mainCtrl.filters[mainCtrl.pageType].keywords.$.length>0 && (mainCtrl.filters[mainCtrl.pageType].keywords.$ + ' ') || ('') }}
+						{{mainCtrl.filters[mainCtrl.pageType].keywords.genre.length>0 && ('genre: ' + mainCtrl.filters[mainCtrl.pageType].keywords.genre + ' ') || ('') }}
+						{{mainCtrl.filters[mainCtrl.pageType].keywords.user.username.length>0 && ('user: ' + mainCtrl.filters[mainCtrl.pageType].keywords.user.username + ' ') || ('') }}
+						{{mainCtrl.filters[mainCtrl.pageType].keywords.title.length>0 && ('title: ' + mainCtrl.filters[mainCtrl.pageType].keywords.title + ' ') || ('') }}
+						{{mainCtrl.filters[mainCtrl.pageType].keywords.tag_list.length>0 && ('tag: ' + mainCtrl.filters[mainCtrl.pageType].keywords.tag_list) || ('') }}
+						</a>
+					</div>
+				
+					<div id="refineByKeywords" class="collapse in">
+
+						<div class="nav nav-stacked">
+					
+							<div class="input-keyword-div">
+								<input id="keyword_all" type="search" class="input-keyword" ng-model="mainCtrl.filters[mainCtrl.pageType].keywords.$" placeholder="Refine by keyword" ng-change="mainCtrl.updatedFilterRefresh()" ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 750, 'blur': 0 } }"/>
+							</div>	
+			
+							<!-- with typeahread options
+							<div class="input-keyword-div">
+								<input type="search" class="input-keyword" ng-model="mainCtrl.filters[mainCtrl.pageType].keywords.genre" placeholder="Refine by Genre" ng-click="mainCtrl.createTypeaheadArray('genre')" ng-keyup="mainCtrl.createTypeaheadArray('genre')" ng-change="mainCtrl.updatedFilterRefresh()" typeahead-on-select="mainCtrl.updatedFilterRefresh()" typeahead-focus-first="false" uib-typeahead="item for item in mainCtrl.typeahreadArray | filter:$viewValue:mainCtrl.startsWith" ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 500, 'blur': 0 } }">
+							</div>
+							-->
+				
+							<div class="input-keyword-div">
+								<input type="search" class="input-keyword" ng-model="mainCtrl.filters[mainCtrl.pageType].keywords.user.username" placeholder="Refine by Username" ng-change="mainCtrl.updatedFilterRefresh()" ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 750, 'blur': 0 } }">
+							</div>
+						
+							<div class="input-keyword-div">
+								<input type="search" class="input-keyword" ng-model="mainCtrl.filters[mainCtrl.pageType].keywords.title" placeholder="Refine by Title" ng-change="mainCtrl.updatedFilterRefresh()" ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 750, 'blur': 0 } }">
+							</div>	
+			
+							<div class="input-keyword-div">
+								<input type="search" class="input-keyword" ng-model="mainCtrl.filters[mainCtrl.pageType].keywords.tag_list" placeholder="Refine by Tag" ng-change="mainCtrl.updatedFilterRefresh()" ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 750, 'blur': 0 } }">
+							</div>	
+						
+							<div class="input-keyword-div">
+								<input type="search" class="input-keyword" ng-model="mainCtrl.filters[mainCtrl.pageType].keywords.genre" placeholder="Refine by Genre" ng-change="mainCtrl.updatedFilterRefresh()" ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 750, 'blur': 0 } }">
+							</div>
+
+						</div>
+					
+						<small>Tip: comma-seperate multiple keywords</small>
+
+					</div>
+
+				</fieldset>	
+			
+			
+				<fieldset class="panel">
+			
+					<legend id="latestTracksByTypeLegend" align="center" data-toggle="collapse" class="sd-latest collapsed" data-parent="#accordion" data-target="#playerOptions">
+						App Player Settings
+					</legend>
+					
+					<div class="sd-fieldset-expander">
+						<a id="latestTracksByTypeExpander" data-toggle="collapse" class="collapsed" data-parent="#accordion" data-target="#playerOptions">
+						<br/>
+						autoplay: {{mainCtrl.filters.widgetOptions.auto_play && ('on') || ('off') }}, comments: {{mainCtrl.filters.widgetOptions.show_comments && ('on') || ('off') }}
+						</a>
+					</div>
+				
+					<div id="playerOptions" class="collapse">
+
+						<div class="nav nav-stacked">
+
+							<label>
+								<input type="checkbox" class="multiple-select" ng-model="mainCtrl.filters.widgetOptions.auto_play" checked="mainCtrl.filters.widgetOptions.auto_play" hidden><span>Auto-play</span>
+							</label>
+							<label>
+								<input type="checkbox" class="multiple-select" ng-model="mainCtrl.filters.widgetOptions.show_comments" checked="mainCtrl.filters.widgetOptions.show_comments" hidden><span>Show comments</span>
+							</label>
+							<!--								
+							<label>
+								<input type="checkbox" ng-model="mainCtrl.filters.widgetOptions.hide_related" checked="mainCtrl.filters.widgetOptions.hide_related" hidden><span>Hide related</span>
+							</label>	
+							-->
+						</div>
+					
+						<small>Note: Auto-play may not work on mobiles</small>
+
+					</div>
+
+				</fieldset>	
+			
+			
+				<small ng-show="mainCtrl.pageType=='likes'"><br/>(Liked Playlists are coming soon)</small>
+
+			</div> 	
+
+		</div> 
+		
+			
+		<div id="cardClone" clone-directive>
+		
+			<div id="cloneFront"></div>
+			
+			<div id="cloneBack">
+				<iframe id="sc-widget" style="display:none;" class="iframe" width="100%" height="100%" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=http://api.soundcloud.com/">
+				</iframe>
+				<div class="cloneArtwork">
+				</div>
+			</div>
+			
+		</div>	
+		
+		
+		<nav class="navbar-fixed-bottom">
+		
+				<div class="sd-playbar">
+				
+					<span class="glyphicon" ng-click="mainCtrl.widget.toggle()"></span>	
+				
+					<span class="sd-playbar-thumbnail">
+						<a thumbnail-directive data-track="">
+							<img class="artwork"  />
+						</a>
+					</span>
+											
+					<span class="metadata" onclick="$('.sd-playbar-thumbnail a').trigger('click')">	
+						<div class="user">user</div>
+						<div class="title">title</div>
+					</span>	
+					
+					
+					<span class="metadata-right">	
+						<div class="counts">
+							<span class="plays">0</span><br>
+							<span class="likes">500</span><br>
+							<span class="reposts">56</span><br>
+						</div>
+							
+						<a class="attribution" href="https://soundcloud.com" target="_blank">
+							<img alt="Player Attribution" src="https://developers.soundcloud.com/assets/powered_by_black-4339b4c3c9cf88da9bfb15a16c4f6914.png">
+						</a>	
+						
+					</span>	
+
+				</div>
+
+		</nav>
+		
+		
+		
+		<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+		
+		<script src="http://connect.soundcloud.com/sdk/sdk-3.0.0.js"></script>	
+		<script src="https://w.soundcloud.com/player/api.js" type="text/javascript"></script>
+		
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+		
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-animate.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-route.js"></script>
+		
+		<script data-require="lodash.js@*" data-semver="2.4.1" src="http://cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
+		
+		<script src="js/modules/checklist-model.js"></script>	
+		<script src="js/modules/ngStorage.min.js"></script>
+		<script src='js/modules/ng-infinite-scroll.min.js'></script>	
+			
+		<script src="js/app.js"></script>
+		<script src="js/controllers/main.js"></script>
+		
+		<script src="js/services/SonarDeckService.js"></script>
+		
+		<script src="js/directives/player.js"></script>
+	
+	
+	</body>
+	
+</html>
