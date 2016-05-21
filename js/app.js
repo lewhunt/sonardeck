@@ -10,7 +10,7 @@ sonardeckApp.config(function($routeProvider) {
 		.when('/', {
 			templateUrl: 'templates/grid.html',
 			controller: function($scope) {
-				$scope.mainCtrl.pageType = "explore";
+				$scope.mainCtrl.pageType = "latest";
 				$scope.mainCtrl.initPublicTracks();	
 
 			}	
