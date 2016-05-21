@@ -11,7 +11,7 @@ sonardeckApp.controller('MainController', function($scope, SonarDeckService, $ti
 	
 	this.filters = {};
 	
-	this.pageType = 'explore';
+	this.pageType = 'latest';
 	
 	this.filterMenuFlag = false;
 
