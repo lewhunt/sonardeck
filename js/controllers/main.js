@@ -11,14 +11,14 @@ sonardeckApp.controller('MainController', function($scope, SonarDeckService, $ti
 	
 	this.filters = {};
 	
-	this.pageType = 'explore';
+	this.pageType = 'latest';
 	
 	this.filterMenuFlag = false;
 
 	this.signedIn = false;
 
 	this.filters.latest = {track_type:['Original']};
-	this.filters.explore = {genre:['Alternative']};	
+	this.filters.explore = {genre:['Alternative Rock']};	
 	this.filters.stream = {type:[]};
 	this.filters.likes = {keywords:{}};
 	this.filters.widgetOptions = {visual: true, auto_play:true, show_comments:true, hide_related:true};
